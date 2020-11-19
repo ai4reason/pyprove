@@ -34,13 +34,15 @@ def parse(f_out, trains=False, out=None, proof=False):
    if proof:
       result["PROOF"] = []
    if f_out is not None:
-      out = open(f_out)
+      out = open(f_out).read().strip()
    else:
-      out = out.strip().split("\n")
-            
+      out = out.strip()
+   if not out:
+      result["STATUS"] = "ResourceOut"
+      return result
 
    inproof = False
-   for line in out:
+   for line in out.split("\n"):
       line = line.rstrip()
       # search for patterns from PATS
       if (len(line) > 2) and ((line[0] == "#" and line[1] == " " )or line[0] == " "):
