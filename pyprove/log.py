@@ -66,6 +66,18 @@ def terminating():
    if "last_traceback" in dir(sys):
       traceback.print_last()
 
+CONSOLE = None
+
+def handler(fd, logger0=None):
+   global CONSOLE
+   logger0 = logging.getLogger() if not logger0 else logger0
+   if CONSOLE and CONSOLE in logger0.handlers:
+      logger0.removeHandler(CONSOLE)
+   CONSOLE = logging.StreamHandler(io.TextIOWrapper(os.fdopen(fd,"wb")))
+   CONSOLE.setLevel(logging.DEBUG)
+   CONSOLE.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
+   logger0.addHandler(CONSOLE)
+
 def logger(name=None, console_only=False, **others):
    logger0 = logging.getLogger()
    logger0.setLevel(logging.DEBUG)
@@ -80,10 +92,7 @@ def logger(name=None, console_only=False, **others):
       h.setFormatter(logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s'))
       logger0.addHandler(h)
 
-   h = logging.StreamHandler(io.TextIOWrapper(os.fdopen(sys.stdout.fileno(),"wb")))
-   h.setLevel(logging.DEBUG)
-   h.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
-   logger0.addHandler(h)
+   handler(sys.stdout.fileno(), logger0)
 
    logger0.info("Enigmatic Running.")
    atexit.register(terminating)
