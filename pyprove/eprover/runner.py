@@ -42,7 +42,7 @@ def cmd(f_problem, proto, limit, ebinary=None, eargs=None):
    try:
       limit = [LIMIT[x](limits[x]) for x in limits]
    except:
-      raise Exception("pyprove.eprover.runner: Unknown E limit for eprover.runner (%s)"%limit)
+      raise Exception("pyprove.eprover.runner: Unknown E limit for eprover.runner (%s)"%limits)
    limit = " ".join(limit)
 
    estatic = E_ARGS % "%s %s" % (limit, eargs)

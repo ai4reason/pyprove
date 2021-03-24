@@ -1,4 +1,11 @@
 
+def numeric(strval):
+   if strval.isdigit():
+      return int(strval)
+   if strval.count(".") == 1 and strval[-1] != ".":
+      return float(strval)
+   return strval
+
 def format(key, val):
    unit = key[key.rfind(".")+1:]
    return UNITS[unit](val) if unit in UNITS else str(val)
