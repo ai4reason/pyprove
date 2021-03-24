@@ -96,20 +96,21 @@ class Prover:
       return result
 
    def save(self, output, f_out):
-      if TAR_PAT in f_out:
-         (f_tar, f_name) = f_out.split(TAR_PAT)
-         d_tar = os.path.dirname(f_tar)
-         if not os.path.isdir(d_tar):
-            os.makedirs(d_tar, exist_ok=True)
-         archive = tarfile.open(f_tar, "a:")
-         tarinfo = tarfile.TarInfo(f_name+".gz")
-         output = gzip.compress(output)
-         tarinfo.size = len(output)
-         archive.addfile(tarinfo, io.BytesIO(output))
-         archive.close()
-      else:
-         os.makedirs(os.path.dirname(f_out), exist_ok=True)
-         open(f_out, "wb").write(output)
+      #if TAR_PAT in f_out:
+      #   (f_tar, f_name) = f_out.split(TAR_PAT)
+      #   d_tar = os.path.dirname(f_tar)
+      #   if not os.path.isdir(d_tar):
+      #      os.makedirs(d_tar, exist_ok=True)
+      #   archive = tarfile.open(f_tar, "a:")
+      #   tarinfo = tarfile.TarInfo(f_name+".gz")
+      #   output = gzip.compress(output)
+      #   tarinfo.size = len(output)
+      #   archive.addfile(tarinfo, io.BytesIO(output))
+      #   archive.close()
+      #else:
+      os.makedirs(os.path.dirname(f_out), exist_ok=True)
+      output = gzip.compress(output)
+      open(f_out+".gz", "wb").write(output)
 
    def limits(self, limit_args, timeout_after):
       lims = {x[0]:x[1:] for x in self.limit_resource.split("-") if x}

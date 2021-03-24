@@ -11,13 +11,14 @@ def dir(prover, bid, sid):
 def path(prover, bid, sid, problem, options=[], ext="out", **others):
    if "no_outputs" in options:
       return None
-   if "no_archive" in options:
+   #if "no_archive" in options:
+   else:
       f_out = "%s.%s" % (problem, ext)
       f = os.path.join(dir(prover, bid, sid), f_out)
       return f
-   else:
-      f_tar = dir(prover, bid, sid) 
-      return f"{f_tar}.tar|{problem}.{ext}"
+   #else:
+   #   f_tar = dir(prover, bid, sid) 
+   #   return f"{f_tar}.tar|{problem}.{ext}"
 
 #def exists(prover, bid, sid, problem, ext="out"):
 #   f_out = path(prover, bid, sid, problem, ext=ext)
