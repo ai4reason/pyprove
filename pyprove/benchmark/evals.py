@@ -50,7 +50,7 @@ def eval1(prover, bid, sid, cores, options=[], label="[*]", **others):
    solved.save(prover, bid, sid, results1)
    return results1
 
-def eval(prover, bids, sids, cores, **others):
+def evals(prover, bids, sids, cores=4, **others):
    allres = {}
    ns = len(bids) * len(sids)
    ps = sum([len(problem.problems(bid)) for bid in bids]) * len(sids)
