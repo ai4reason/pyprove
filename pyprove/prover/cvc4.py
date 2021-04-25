@@ -25,7 +25,11 @@ KEYS = [
    "resource::RewriteStep",
    "resource::PreprocessStep",
    "Instantiate::Instantiations_Total",
-   "SharedTermsDatabase::termsCount"
+   "SharedTermsDatabase::termsCount",
+   "sat::conflicts",
+   "sat::decisions",
+   #"theory::\S*::lemmas",
+   #"theory::\S*::conflicts",
 ]
 
 PAT = re.compile(r"^(%s), (\S*)" % "|".join(KEYS), flags=re.MULTILINE)
