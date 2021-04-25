@@ -1,8 +1,8 @@
 import subprocess
 import time
 import os
-import tarfile
-import io
+#import tarfile
+#import io
 import gzip
 
 TIMEOUT = "timeout --kill-after=1 --foreground %s " # note the space at the end
@@ -87,13 +87,17 @@ class Prover:
       return output
 
    def prove(self, problem, strategy="", f_out=None, **others):
-      start = time.time()
-      output = self.output(problem, strategy, **others)
-      if f_out:
-         self.save(output, f_out)
-      result = self.parse(output.decode())
-      result["REALTIME"] = time.time() - start
-      return result
+      if f_out and os.path.isfile(f_out+".gz"):
+         output = gzip.decompress(open(f_out+".gz","rb").read())
+         return self.parse(output.decode())
+      else:
+         start = time.time()
+         output = self.output(problem, strategy, **others)
+         if f_out:
+            self.save(output, f_out)
+         result = self.parse(output.decode())
+         result["REALTIME"] = time.time() - start
+         return result
 
    def save(self, output, f_out):
       #if TAR_PAT in f_out:
@@ -108,7 +112,8 @@ class Prover:
       #   archive.addfile(tarinfo, io.BytesIO(output))
       #   archive.close()
       #else:
-      os.makedirs(os.path.dirname(f_out), exist_ok=True)
+      if os.path.dirname(f_out):
+         os.makedirs(os.path.dirname(f_out), exist_ok=True)
       output = gzip.compress(output)
       open(f_out+".gz", "wb").write(output)
 
