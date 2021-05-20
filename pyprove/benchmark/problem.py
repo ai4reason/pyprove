@@ -17,6 +17,6 @@ def problems(bid):
       probs = open(p_bid).read().strip().split("\n")
    else: # now os.path.isdir(p_bid) holds
       probs = [x for x in os.listdir(p_bid) if os.path.isfile(os.path.join(p_bid,x))]
-      probs = [os.path.join(p_bid, x) for x in probs]
+      probs = [os.path.join(bid, x) for x in probs]
    return probs
 
