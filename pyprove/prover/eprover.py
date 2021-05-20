@@ -24,8 +24,16 @@ PATS = {
    "PROCESSED": re.compile(r"^# Processed clauses\s*: (\S*)"),
    "GENERATED": re.compile(r"^# Generated clauses\s*: (\S*)"),
    "PROOFLEN":  re.compile(r"^# Proof object total steps\s*: (\S*)"),
-   "PRUNED":    re.compile(r"^# Removed by relevancy pruning/SinE\s*: (\S*)")
+   "PRUNED":    re.compile(r"^# Removed by relevancy pruning/SinE\s*: (\S*)"),
+   "BACKSUB": re.compile(r"^# Backward-subsumed\s*: (\S*)"),
+   "BACKRW": re.compile(r"^# Backward-rewritten\s*: (\S*)"),
+   "PARAMOD": re.compile(r"^# Paramodulations\s*: (\S*)"),
+   "FACT": re.compile(r"^# Factorizations\s*: (\S*)"),
+   "EQRES": re.compile(r"^# Equation resolutions\s*: (\S*)"),
+   "SUBSUMES": re.compile(r"^# Clause-clause subsumption calls \(NU\)\s*: (\S*)"),
+   "TERMBANK": re.compile(r"^# Termbank termtop insertions\s*: (\S*)"),
 }
+
 
 class EProver(Prover):
 
