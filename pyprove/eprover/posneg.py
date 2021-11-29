@@ -1,14 +1,16 @@
-import os
+import os, re
 from os import path, listdir
 from .. import par
 
+PAT_UNTYPE = re.compile(r"\!\[.*\]:\(")
+
 def ispos(line):
-   return line.startswith("cnf(") and \
+   return (line.startswith("cnf(") or line.startswith("tcf(")) and \
          ("#trainpos" in line or "# trainpos" in line) and \
          ("$false" not in line)
 
 def isneg(line):
-   return line.startswith("cnf(") and \
+   return (line.startswith("cnf(") or line.startswith("tcf(")) and \
          ("#trainneg" in line) and \
          ("$false" not in line)
 
@@ -17,10 +19,19 @@ def isother(line):
 
 def isout(filename):
    return filename.endswith(".out") and path.isfile(filename)
-   
+
+def untype(line):
+   if line.startswith("tcf("):
+      line = re.sub(PAT_UNTYPE, "", line)
+      line = line.replace(")).", ").")
+      line = "cnf(" + line[4:]
+      return line
+   else:
+      return line
+
 def split(lines):
-   pos = filter(ispos, lines)
-   neg = filter(isneg, lines)
+   pos = map(untype, filter(ispos, lines))
+   neg = map(untype, filter(isneg, lines))
    other = filter(isother, lines)
    return (pos, neg, other)
 
