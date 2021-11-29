@@ -22,8 +22,9 @@ def isout(filename):
 
 def untype(line):
    if line.startswith("tcf("):
-      line = re.sub(PAT_UNTYPE, "", line)
-      line = line.replace(")).", ").")
+      if re.search(PAT_UNTYPE, line):
+         line = re.sub(PAT_UNTYPE, "", line)
+         line = line.replace(")).", ").")
       line = "cnf(" + line[4:]
       return line
    else:
