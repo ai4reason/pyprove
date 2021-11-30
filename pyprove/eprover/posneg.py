@@ -52,7 +52,7 @@ def save(lines, f_out):
 
 def makeone(f_out, d_dst=None):
    if f_out.endswith(".gz"):
-      output = gzip.decompress(open(f_out).read()).decode()
+      output = gzip.decompress(open(f_out,"rb").read()).decode()
       f_out = f_out[:-3]
    else:
       output = open(f_out).read()
