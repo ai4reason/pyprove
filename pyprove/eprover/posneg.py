@@ -1,4 +1,4 @@
-import os, re
+import os, re, gzip
 from os import path, listdir
 from .. import par
 
@@ -51,7 +51,13 @@ def save(lines, f_out):
       open(filename("neg"),"w").write("\n".join(neg)+"\n")
 
 def makeone(f_out, d_dst=None):
-   lines = open(f_out).read().strip().split("\n")
+   if f_out.endswith(".gz"):
+      output = gzip.decompress(open(f_out).read()).decode()
+      f_out = f_out[:-3]
+   else:
+      output = open(f_out).read()
+   #lines = open(f_out).read().strip().split("\n")
+   lines = output.strip().split("\n")
    if d_dst:
       (pid, f) = f_out.split("/")[-2:]
       f_out = path.join(d_dst, pid, f).rstrip("/")
