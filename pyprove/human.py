@@ -7,6 +7,10 @@ def numeric(strval):
    return strval
 
 def format(key, val):
+   #for unit in UNITS:
+   #   if unit in key:
+   #      return UNITS[unit](val)
+   #return str(val)
    unit = key[key.rfind(".")+1:]
    return UNITS[unit](val) if unit in UNITS else str(val)
 
@@ -46,11 +50,21 @@ def humanloss(xy):
    (x, y) = xy
    return "%.2f [iter %s]" % (x, y)
 
+def humanacc(xyz):
+   (acc, pos, neg) = xyz
+   return "%.2f%% (%.2f%% / %.2f%%)" % (100*acc, 100*pos, 100*neg)
+
+def humancounts(xyz):
+   xyz = tuple(map(humanint, xyz))
+   return "%s (%s / %s)" % xyz
+
 UNITS = {
    "count": humanint,
    "loss": humanloss,
    "time": humantime,
    "seconds": lambda x: "%.2f" % x,
-   "size": humanbytes
+   "size": humanbytes,
+   "acc": humanacc,
+   "counts": humancounts,
 }
 
