@@ -95,6 +95,8 @@ def logger(name=None, console_only=False, **others):
    handler(sys.stdout.fileno(), logger0)
 
    logger0.info("Enigmatic Running.")
+   if others:
+      logger0.info(data("+ experiment setup:", others))
    atexit.register(terminating)
    return logging.getLogger(name) if name else logger0
 

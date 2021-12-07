@@ -5,7 +5,7 @@ from . import protos, results
 from . import solved as solvedb
 import logging
 
-BENCHMARKS_DIR = os.getenv("ATPY_BENCHMARKS", ".")
+BENCHMARKS_DIR = os.getenv("PYPROVE_BENCHMARKS", ".")
 TIMEOUT = 7*24*60*60
 
 logger = logging.getLogger(__name__)
@@ -41,7 +41,18 @@ def eval(bid, pids, limit, cores=4, debug=[], ebinary=None, eargs=None, options=
    probs = problems(bid)
 
    logger.info("+ evaluating %s strategies on %d problems" % (len(pids), len(probs)))
-   logger.debug(log.data("- evaluation parameters:", dict(bid=bid, limit=limit, pids=pids, problems=human.humanint(len(probs)*len(pids)),eta=human.humantime(len(probs)*len(pids)*int(limit.lstrip("T"))/cores))))
+   try:
+      eta = human.humantime(len(probs)*len(pids)*int(limit.lstrip("T"))/cores)
+   except:
+      eta = "unknown"
+   logger.debug(log.data("- evaluation parameters:", dict(
+      bid=bid, 
+      limit=limit, 
+      pids=pids, 
+      problems=human.humanint(len(probs)),
+      tasks=human.humanint(len(probs)*len(pids)),
+      eta=eta,
+   )))
    
    allres = {}
    fmt = "%%%ds" % max(map(len,pids))
@@ -49,7 +60,12 @@ def eval(bid, pids, limit, cores=4, debug=[], ebinary=None, eargs=None, options=
       args = [(bid,pid,problem,limit,force,ebinary,eargs) for problem in probs]
       name = "(%d/%d)" % (n,len(pids))
       if "headless" not in options:
-         progbar = bar.SolvedBar(name, max=len(args), tail=pid) 
+         if pid.startswith("Enigma+"):
+            parts = pid.split("+")
+            tail = "+".join([parts[i] for i in [2,3,6]])
+         else:
+            tail = pid
+         progbar = bar.SolvedBar(name, max=len(args), tail=tail) 
       else:
          logger.info("- evaluating %s" % pid)
          progbar = None

@@ -47,14 +47,17 @@ def humanexp(n):
    return str(n)
 
 def humanloss(xy):
+   if len(xy) != 2: return str(xy)
    (x, y) = xy
    return "%.2f [iter %s]" % (x, y)
 
 def humanacc(xyz):
+   if len(xyz) != 3: return str(xyz)
    (acc, pos, neg) = xyz
    return "%.2f%% (%.2f%% / %.2f%%)" % (100*acc, 100*pos, 100*neg)
 
 def humancounts(xyz):
+   if len(xyz) != 3: return str(xyz)
    xyz = tuple(map(humanint, xyz))
    return "%s (%s / %s)" % xyz
 
